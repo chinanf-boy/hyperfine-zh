@@ -14,14 +14,14 @@
 
 <!-- doc-templite START generated -->
 <!-- repo = 'sharkdp/hyperfine' -->
-<!-- commit = 'bdccc10a61d65b0d1e59e98bf95a0ca50edc2d76' -->
-<!-- time = '2018 8.26' -->
+<!-- commit = '094b76d23a74341de2e03e34eb15285895517b2b' -->
+<!-- time = '2018 9.28' -->
 翻译的原文 | 与日期 | 最新更新 | 更多
 ---|---|---|---
-[commit] | ⏰ 2018 8.26 | ![last] | [中文翻译][translate-list]
+[commit] | ⏰ 2018 9.28 | ![last] | [中文翻译][translate-list]
 
 [last]: https://img.shields.io/github/last-commit/sharkdp/hyperfine.svg
-[commit]: https://github.com/sharkdp/hyperfine/tree/bdccc10a61d65b0d1e59e98bf95a0ca50edc2d76
+[commit]: https://github.com/sharkdp/hyperfine/tree/094b76d23a74341de2e03e34eb15285895517b2b
 
 <!-- doc-templite END generated -->
 
@@ -67,7 +67,7 @@
 [![Build status](https://ci.appveyor.com/api/projects/status/pdqq5frgkcj0smrs?svg=true)](https://ci.appveyor.com/project/sharkdp/hyperfine)
 [![Version info](https://img.shields.io/crates/v/hyperfine.svg)](https://crates.io/crates/hyperfine)
 
-命令行基准测试工具 (*灵感来自[长凳](https://github.com/Gabriel439/bench)*) . 
+命令行基准测试工具 (*灵感来自[bench](https://github.com/Gabriel439/bench)*) . 
 
 **演示**: [`fd`](https://github.com/sharkdp/fd)和[`find`](https://www.gnu.org/software/findutils/) 的 基准测试:
 
@@ -79,7 +79,7 @@
 -   支持任意shell命令. 
 -   关于基准进展和当前估计的持续反馈. 
 -   可以在实际基准之前,预热执行. 
--   可以在每次定时运行之前设置高速缓存清除命令. 
+-   可以在每次定时运行之前，设置缓存清除命令. 
 -   统计异常值检测. 
 -   将结果导出为各种格式: CSV,JSON,Markdown. 
 -   参数化基准. 
@@ -87,7 +87,7 @@
 
 ## 用法
 
-### 基本基准
+### 基本基准测试
 
 要运行基准测试,您只需调用即可`hyperfine <command>...`. 参数可以是任何shell命令. 例如: 
 
@@ -103,15 +103,15 @@ hyperfine --min-runs 5 'sleep 0.2' 'sleep 3.2'
 
 ### 注重 I/O 的程序
 
-如果程序执行时间受磁盘 I/O 限制,则基准测试结果可能会受到磁盘高速缓存以及它们是冷还是热的严重影响. 
+如果程序执行时间受磁盘 I/O 限制,则基准测试结果可能会受到冷还是热的磁盘缓存严重影响. 
 
-如果要在热缓存上运行基准测试,可以使用`-w`/`--warmup`在实际基准测试之前,执行一定数量的程序执行的选项: 
+如果要在热缓存上运行基准测试,在实际基准测试之前可以使用`-w`/`--warmup`,执行一定数量的程序执行的选项(预热预热): 
 
 ```bash
 hyperfine --warmup 3 'grep -R TODO *'
 ```
 
-相反,如果要运行冷缓存的基准测试,可以使用这个`-p`/`--prepare`选项,在*每次*计时运行之前运行特殊命令. 例如,要清除Linux上的硬盘缓存,可以运行
+相反,如果要运行冷缓存的基准测试,可以使用这个`-p`/`--prepare`选项, 在*每次*计时运行之前，运行特定命令. 例如,要清除Linux上的硬盘缓存,可以运行
 
 ```bash
 sync; echo 3 | sudo tee /proc/sys/vm/drop_caches
@@ -125,7 +125,7 @@ hyperfine --prepare 'sync; echo 3 | sudo tee /proc/sys/vm/drop_caches' 'grep -R 
 
 ### 参数化基准
 
-如果你想运行只有一个参数变化的基准 (比如线程数) ,你可以使用`-P`/`--parameter-scan`选项: 
+如果你想在一个参数变化的情况下运行基准测试 (比如线程数) ,你可以使用`-P`/`--parameter-scan`选项: 
 
 ```bash
 hyperfine --prepare 'make clean' --parameter-scan num_threads 1 12 'make -j {num_threads}'
@@ -133,7 +133,7 @@ hyperfine --prepare 'make clean' --parameter-scan num_threads 1 12 'make -j {num
 
 ### 导出结果
 
-Hyperfine有多种导出基准测试结果的选项: CSV,JSON,Markdown (参见`--help`文字详情) . 例如,要将结果导出到Markdown,您可以使用`--export-markdown`,那将创建这样的表: 
+Hyperfine有多种导出基准测试结果的选项: CSV,JSON,Markdown (参见`--help`文字详情) . 例如,要将结果导出到Markdown,您可以使用`--export-markdown`,那将创建这样的表格: 
 
 | Command | Mean [ms] | Min…Max [ms] |
 |:---|---:|---:|
@@ -143,43 +143,45 @@ Hyperfine有多种导出基准测试结果的选项: CSV,JSON,Markdown (参见`-
 
 ## 安装
 
-### 在macOS上
+### macOS
 
-Hyperfine可以通过安装[brew](https://brew.sh): 
+Hyperfine可以通过[brew](https://brew.sh)安装: 
 
     brew install hyperfine
 
-### 在Ubuntu上
+### Ubuntu
 
-下载相应的`.deb`包,在[发布页面](https://github.com/sharkdp/hyperfine/releases)并通过`dpkg`安装它: 
+下载相应的`.deb`包,在[releases页面](https://github.com/sharkdp/hyperfine/releases)并通过`dpkg`安装它: 
 
-    wget https://github.com/sharkdp/hyperfine/releases/download/v1.2.0/hyperfine_1.2.0_amd64.deb
-    sudo dpkg -i hyperfine_1.2.0_amd64.deb
+```
+wget https://github.com/sharkdp/hyperfine/releases/download/v1.3.0/hyperfine_1.3.0_amd64.deb
+sudo dpkg -i hyperfine_1.3.0_amd64.deb
+```
 
-### 在Arch Linux上
+### Arch Linux
 
-在Arch Linux上,可以安装hyperfine[通过AUR](https://aur.archlinux.org/packages/hyperfine): 
+在Arch Linux,可以通过[AUR](https://aur.archlinux.org/packages/hyperfine)安装hyperfine: 
 
     yaourt -S hyperfine
 
-### 在Void Linux上
+### Void Linux
 
-Hyperfine可以通过xbps安装
+Hyperfine可以通过`xbps`安装:
 
     xbps-install -S hyperfine
 
 ### Cargo (Linux,macOS,Windows) 
 
-Hyperfine可以通过安装[cargo](https://doc.rust-lang.org/cargo/): 
+Hyperfine可以通过[cargo](https://doc.rust-lang.org/cargo/)安装: 
 
     cargo install hyperfine
 
-确保使用Rust 1.24或更高版本. 
+确保使用`Rust 1.24或更高版本`. 
 
-### 二进制文件 (Linux,macOS) 
+### 二进制文件 (Linux,macOS,Windows) 
 
-从中下载相应的存档[发布页面](https://github.com/sharkdp/hyperfine/releases). 
+从[releases页面](https://github.com/sharkdp/hyperfine/releases)中下载相应的打包文件. 
 
 ## 名称的由来
 
-名字*hyperfine*是根据 铯133 的 hyperfine 水平来选择的,铯133在铯中[定义我们的基本时间单位](https://en.wikipedia.org/wiki/Second#Based_on_caesium_microwave_atomic_clock)起着至关重要的作用- 第二. 
+名字*hyperfine*是根据 铯133 的 hyperfine 能级选择的,铯133的这能级的频率[定义了我们的基本时间单位-1秒钟](https://en.wikipedia.org/wiki/Second#History_of_definition) 

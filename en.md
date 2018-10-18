@@ -96,8 +96,8 @@ brew install hyperfine
 Download the appropriate `.deb` package from the [Release page](https://github.com/sharkdp/hyperfine/releases)
 and install it via `dpkg`:
 ```
-wget https://github.com/sharkdp/hyperfine/releases/download/v1.2.0/hyperfine_1.2.0_amd64.deb
-sudo dpkg -i hyperfine_1.2.0_amd64.deb
+wget https://github.com/sharkdp/hyperfine/releases/download/v1.3.0/hyperfine_1.3.0_amd64.deb
+sudo dpkg -i hyperfine_1.3.0_amd64.deb
 ```
 
 ### On Arch Linux
@@ -124,12 +124,12 @@ cargo install hyperfine
 
 Make sure that you use Rust 1.24 or higher.
 
-### From binaries (Linux, macOS)
+### From binaries (Linux, macOS, Windows)
 
 Download the corresponding archive from the [Release page](https://github.com/sharkdp/hyperfine/releases).
 
 ## Origin of the name
 
 The name *hyperfine* was chosen in reference to the hyperfine levels of caesium 133 which play a crucial role in the
-[definition of our base unit of time](https://en.wikipedia.org/wiki/Second#Based_on_caesium_microwave_atomic_clock)
+[definition of our base unit of time](https://en.wikipedia.org/wiki/Second#History_of_definition)
 — the second.
