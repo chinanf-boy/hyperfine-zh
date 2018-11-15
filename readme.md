@@ -45,17 +45,17 @@
 - [hyperfine](#hyperfine)
   - [特征](#%E7%89%B9%E5%BE%81)
   - [用法](#%E7%94%A8%E6%B3%95)
-    - [基本基准](#%E5%9F%BA%E6%9C%AC%E5%9F%BA%E5%87%86)
-    - [I / O重程序](#i--o%E9%87%8D%E7%A8%8B%E5%BA%8F)
+    - [基本基准测试](#%E5%9F%BA%E6%9C%AC%E5%9F%BA%E5%87%86%E6%B5%8B%E8%AF%95)
+    - [注重 I/O 的程序](#%E6%B3%A8%E9%87%8D-io-%E7%9A%84%E7%A8%8B%E5%BA%8F)
     - [参数化基准](#%E5%8F%82%E6%95%B0%E5%8C%96%E5%9F%BA%E5%87%86)
     - [导出结果](#%E5%AF%BC%E5%87%BA%E7%BB%93%E6%9E%9C)
   - [安装](#%E5%AE%89%E8%A3%85)
-    - [在macOS上](#%E5%9C%A8macos%E4%B8%8A)
-    - [在Ubuntu上](#%E5%9C%A8ubuntu%E4%B8%8A)
-    - [在Arch Linux上](#%E5%9C%A8arch-linux%E4%B8%8A)
-    - [在Void Linux上](#%E5%9C%A8void-linux%E4%B8%8A)
-    - [货物 (Linux,macOS,Windows)](#%E8%B4%A7%E7%89%A9-linuxmacoswindows)
-    - [从二进制文件 (Linux,macOS)](#%E4%BB%8E%E4%BA%8C%E8%BF%9B%E5%88%B6%E6%96%87%E4%BB%B6-linuxmacos)
+    - [macOS](#macos)
+    - [Ubuntu](#ubuntu)
+    - [Arch Linux](#arch-linux)
+    - [Void Linux](#void-linux)
+    - [Cargo (Linux,macOS,Windows)](#cargo-linuxmacoswindows)
+    - [二进制文件 (Linux,macOS,Windows)](#%E4%BA%8C%E8%BF%9B%E5%88%B6%E6%96%87%E4%BB%B6-linuxmacoswindows)
   - [名称的由来](#%E5%90%8D%E7%A7%B0%E7%9A%84%E7%94%B1%E6%9D%A5)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
@@ -89,13 +89,13 @@
 
 ### 基本基准测试
 
-要运行基准测试,您只需调用即可`hyperfine <command>...`. 参数可以是任何shell命令. 例如: 
+要运行基准测试，您只需调用即可`hyperfine <command>...`. 参数可以是任何shell命令. 例如: 
 
 ```bash
 hyperfine 'sleep 0.3'
 ```
 
-Hyperfine将自动确定要为每个命令执行的运行次数. 默认情况下,它将执行*至少*10个基准测试运行. 要更改此设置,您可以使用`-m`/`--min-runs`选项: 
+Hyperfine将自动确定要为每个命令执行的运行次数. 默认情况下，它将执行*至少*10个基准测试运行. 要更改此设置，您可以使用`-m`/`--min-runs`选项: 
 
 ```bash
 hyperfine --min-runs 5 'sleep 0.2' 'sleep 3.2'
@@ -103,21 +103,21 @@ hyperfine --min-runs 5 'sleep 0.2' 'sleep 3.2'
 
 ### 注重 I/O 的程序
 
-如果程序执行时间受磁盘 I/O 限制,则基准测试结果可能会受到冷还是热的磁盘缓存严重影响. 
+如果程序执行时间受磁盘 I/O 限制，则基准测试结果可能会受到冷还是热的磁盘缓存严重影响. 
 
-如果要在热缓存上运行基准测试,在实际基准测试之前可以使用`-w`/`--warmup`,执行一定数量的程序执行的选项(预热预热): 
+如果要在热缓存上运行基准测试，在实际基准测试之前可以使用`-w`/`--warmup`，执行一定数量的程序执行的选项(预热预热): 
 
 ```bash
 hyperfine --warmup 3 'grep -R TODO *'
 ```
 
-相反,如果要运行冷缓存的基准测试,可以使用这个`-p`/`--prepare`选项, 在*每次*计时运行之前，运行特定命令. 例如,要清除Linux上的硬盘缓存,可以运行
+相反，如果要运行冷缓存的基准测试，可以使用这个`-p`/`--prepare`选项， 在*每次*计时运行之前，运行特定命令. 例如，要清除Linux上的硬盘缓存，可以运行
 
 ```bash
 sync; echo 3 | sudo tee /proc/sys/vm/drop_caches
 ```
 
-要在 Hyperfine 中使用此特定命令,请`sudo -v`暂时获得sudo权限,然后调用: 
+要在 Hyperfine 中使用此特定命令，请`sudo -v`暂时获得sudo权限，然后调用: 
 
 ```bash
 hyperfine --prepare 'sync; echo 3 | sudo tee /proc/sys/vm/drop_caches' 'grep -R TODO *'
@@ -125,7 +125,7 @@ hyperfine --prepare 'sync; echo 3 | sudo tee /proc/sys/vm/drop_caches' 'grep -R 
 
 ### 参数化基准
 
-如果你想在一个参数变化的情况下运行基准测试 (比如线程数) ,你可以使用`-P`/`--parameter-scan`选项: 
+如果你想在一个参数变化的情况下运行基准测试 (比如线程数) ，你可以使用`-P`/`--parameter-scan`选项: 
 
 ```bash
 hyperfine --prepare 'make clean' --parameter-scan num_threads 1 12 'make -j {num_threads}'
@@ -133,7 +133,7 @@ hyperfine --prepare 'make clean' --parameter-scan num_threads 1 12 'make -j {num
 
 ### 导出结果
 
-Hyperfine有多种导出基准测试结果的选项: CSV,JSON,Markdown (参见`--help`文字详情) . 例如,要将结果导出到Markdown,您可以使用`--export-markdown`,那将创建这样的表格: 
+Hyperfine有多种导出基准测试结果的选项: CSV,JSON,Markdown (参见`--help`文字详情)。 例如，要将结果导出到Markdown，您可以使用`--export-markdown`，那将创建这样的表格: 
 
 | Command | Mean [ms] | Min…Max [ms] |
 |:---|---:|---:|
@@ -151,7 +151,7 @@ Hyperfine可以通过[brew](https://brew.sh)安装:
 
 ### Ubuntu
 
-下载相应的`.deb`包,在[releases页面](https://github.com/sharkdp/hyperfine/releases)并通过`dpkg`安装它: 
+下载相应的`.deb`包，在[releases页面](https://github.com/sharkdp/hyperfine/releases)并通过`dpkg`安装它: 
 
 ```
 wget https://github.com/sharkdp/hyperfine/releases/download/v1.3.0/hyperfine_1.3.0_amd64.deb
@@ -184,4 +184,6 @@ Hyperfine可以通过[cargo](https://doc.rust-lang.org/cargo/)安装:
 
 ## 名称的由来
 
-名字*hyperfine*是根据 铯133 的 hyperfine 能级选择的,铯133的这能级的频率[定义了我们的基本时间单位-1秒钟](https://en.wikipedia.org/wiki/Second#History_of_definition) 
+名字*hyperfine*是根据 铯133 的 hyperfine 能级选择的,铯133的这一能级的频率[定义了我们的基本时间单位-1秒钟](https://en.wikipedia.org/wiki/Second#History_of_definition) 
+
+> 译：（课外知识）李永乐老师, 一秒究竟有多长 [youtube](https://www.youtube.com/watch?v=cXX_f_pWLQI) | [bilibili](https://www.bilibili.com/video/av34102893?from=search&seid=7806962251356954355)
